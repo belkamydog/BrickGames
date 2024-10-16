@@ -33,8 +33,8 @@ namespace s21 {
             virtual void userInput(UserAction_t action, bool hold);
             virtual GameInfo_t updateCurrentState();
         private:
-            void loadGameRecord(GameInfo_t game_info, std::string filename);
-            void updateGameRecord(GameInfo_t game_info, std::string filename);
+            void loadGameRecord(GameInfo_t *game_info, std::string filename);
+            void updateGameRecord(GameInfo_t *game_info, std::string filename);
             void resetFileHighScore(std::string filename);
     };
 };
