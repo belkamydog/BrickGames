@@ -10,6 +10,7 @@ namespace s21{
             ~Snake();
             void userInput(UserAction_t action, bool hold);
             GameInfo_t updateCurrentState();
+            void updateCurrentState(GameInfo_t *game);
             GameInfo_t getGameInfo();
             bool isAlive();
         private:
@@ -28,7 +29,7 @@ namespace s21{
             const std::string FILE_HIGHSCORE = "snake_record"; 
             const size_t START_LENGTH = 4;
             const size_t MAX_LENGTH = 200;
-            const size_t START_SPEED = 100;
+            const size_t START_SPEED = 500;
             void initaliseSnakeInTheField();
             void snakeMooving();
             void borderControl();

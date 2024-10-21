@@ -7,7 +7,7 @@ s21::Snake::Snake() {
   game_info_.score = 0;
   game_info_.speed = START_SPEED;
   game_info_.level = 1;
-  game_info_.field = createMatrix(ROW, COL);
+  game_info_.field = create_matrix(ROW, COL);
   snake_data_.direction = 'y';
   snake_data_.vector_direction = -1;
   snake_data_.snake_size = START_LENGTH;
@@ -16,37 +16,47 @@ s21::Snake::Snake() {
   goalRandomCoordinateGenerator();
 }
 
-s21::Snake::~Snake() { deleteMatrix(game_info_.field, ROW); }
+s21::Snake::~Snake() { delete_matrix(game_info_.field); }
 
-s21::BrickGame::GameInfo_t s21::Snake::getGameInfo() { return game_info_; }
+GameInfo_t s21::Snake::getGameInfo() { return game_info_; }
 
 bool s21::Snake::isAlive() { return snake_data_.is_allive; }
 
 void s21::Snake::userInput(UserAction_t action, bool hold) {
   if (snake_data_.direction == 'x' &&  snake_data_.vector_direction == -1) {
-    if (action == Right)
+    if (action == Right){
       snake_data_.vector_direction = -1;
-    else if (action == Left)
+      snake_data_.direction = 'y';
+    }
+    else if (action == Left){
       snake_data_.vector_direction = 1;
-    snake_data_.direction = 'y';
+      snake_data_.direction = 'y';
+    }
   }
    else if (snake_data_.direction == 'x' &&  snake_data_.vector_direction == 1) {
-    if (action == Left)
+    if (action == Left){
       snake_data_.vector_direction = -1;
-    else if (action == Right)
+      snake_data_.direction = 'y';
+    }
+    else if (action == Right){
       snake_data_.vector_direction = 1;
-    snake_data_.direction = 'y';
+      snake_data_.direction = 'y';
+    }
   } 
   else if (snake_data_.direction == 'y') {
-    if (action == Right)
+    if (action == Right){
       snake_data_.vector_direction = 1;
-    else if (action == Left)
+      snake_data_.direction = 'x';
+    }
+    else if (action == Left){
       snake_data_.vector_direction = -1;
-    snake_data_.direction = 'x';
+      snake_data_.direction = 'x';
+    }
   }
+  std::cerr <<  hold;
 }
 
-s21::BrickGame::GameInfo_t s21::Snake::updateCurrentState() {
+GameInfo_t s21::Snake::updateCurrentState() {
   if (snake_data_.direction == 'x') {
     snake_data_.x_head += snake_data_.vector_direction;
   } else if (snake_data_.direction == 'y') {
@@ -59,34 +69,40 @@ s21::BrickGame::GameInfo_t s21::Snake::updateCurrentState() {
   return game_info_;
 }
 
+void s21::Snake::updateCurrentState(GameInfo_t *game) {
+  updateCurrentState();
+  *game = game_info_;
+}
+
 void s21::Snake::initaliseSnakeInTheField() {
   snake_data_.x_head = COL / 2;
   snake_data_.y_head = ROW / 2;
-  game_info_.field[snake_data_.y_head][snake_data_.x_head] = 1;
+  game_info_.field->body[snake_data_.y_head][snake_data_.x_head] = 1;
   snake_data_.x_apple = 5;
   snake_data_.y_apple = 2;
   int next_ceil = 2;
   for (size_t i = snake_data_.y_head + 1; i < snake_data_.y_head + START_LENGTH;
        i++) {
-    game_info_.field[i][snake_data_.x_head] = next_ceil;
+    game_info_.field->body[i][snake_data_.x_head] = next_ceil;
     next_ceil++;
   }
 }
 
 void s21::Snake::snakeMooving() {
-  int **previous_field = copyMatrix(ROW, COL, game_info_.field);
+  Matrix *previous_field = create_matrix(ROW , COL);
+  copy_matrix(game_info_.field, previous_field);
   for (size_t i = 0; i < ROW; i++) {
     for (size_t j = 0; j < COL; j++) {
-      if (previous_field[i][j] == snake_data_.snake_size) {
-        game_info_.field[i][j] = 0;
-      } else if (previous_field[i][j] > 0) {
-        game_info_.field[i][j]++;
+      if (previous_field->body[i][j] == (int) snake_data_.snake_size) {
+        game_info_.field->body[i][j] = 0;
+      } else if (previous_field->body[i][j] > 0) {
+        game_info_.field->body[i][j]++;
       }
     }
   }
-  if (game_info_.field[snake_data_.y_head][snake_data_.x_head] > 0) snake_data_.is_allive = false;
-  game_info_.field[snake_data_.y_head][snake_data_.x_head] = 1;
-  deleteMatrix(previous_field, ROW);
+  if (game_info_.field->body[snake_data_.y_head][snake_data_.x_head] > 0) snake_data_.is_allive = false;
+  game_info_.field->body[snake_data_.y_head][snake_data_.x_head] = 1;
+  delete_matrix(previous_field);
 }
 
 void s21::Snake::borderControl() {
@@ -102,14 +118,14 @@ void s21::Snake::goalRandomCoordinateGenerator() {
   size_t point_counter = 0;
   for (size_t i = 0; i < ROW; i++) {
     for (size_t j = 0; j < COL; j++) {
-      if (game_info_.field[i][j] == 0) point_counter++;
-      if (game_info_.field[i][j] == 0 && point_counter == choice){
+      if (game_info_.field->body[i][j] == 0) point_counter++;
+      if (game_info_.field->body[i][j] == 0 && (int) point_counter == choice){
         snake_data_.x_apple = j;
         snake_data_.y_apple = i;
       }
     }
   }
-  game_info_.field[snake_data_.y_apple][snake_data_.x_apple] = -1;
+  game_info_.field->body[snake_data_.y_apple][snake_data_.x_apple] = -1;
 }
 
 void s21::Snake::snakeEatingGoal() {

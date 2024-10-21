@@ -1,10 +1,14 @@
 #include "BrickGame.h"
 
-void s21::BrickGame::userInput(UserAction_t action, bool hold) {}
+void s21::BrickGame::userInput(UserAction_t action, bool hold) {
+  std::cerr << hold << action;
+}
 
-s21::BrickGame::GameInfo_t s21::BrickGame::updateCurrentState() {
+GameInfo_t s21::BrickGame::updateCurrentState() {
   return GameInfo_t();
 }
+
+void s21::BrickGame::updateCurrentState(GameInfo_t *game) {}
 
 void s21::BrickGame::loadGameRecord(std::string filename) {
   std::ifstream in(filename);
@@ -42,37 +46,12 @@ void s21::BrickGame::updateGameRecord(std::string filename) {
 }
 
 void s21::BrickGame::goToTheNextLevel() {
-  if (game_info_.score % STEP_LEVEL == 0 && game_info_.level < MAX_LEVEL){
+  if (game_info_.score % STEP_LEVEL == 0 && game_info_.level < (int) MAX_LEVEL){
     game_info_.level++;
     game_info_.speed += STEP_SPEED;
   }
 }
 
-int **s21::BrickGame::createMatrix(int row, int col) {
-  int **result = new int *[row];
-  for (size_t i = 0; i < row; i++) {
-    result[i] = new int[col];
-    for (size_t j = 0; j < col; j++)
-      result[i][j] = 0;
-  }
-  return result;
-}
-
-int **s21::BrickGame::copyMatrix(int row, int col, int **matrix) {
-  int **result = createMatrix(row, col);
-  for (size_t i = 0; i < row; i++) {
-    for (size_t j = 0; j < col; j++) {
-      result[i][j] = matrix[i][j];
-    }
-  }
-  return result;
-}
-
-void s21::BrickGame::deleteMatrix(int **matrix, int row) {
-  for (size_t i = 0; i < row; i++)
-    delete[] matrix[i];
-  delete[] matrix;
-}
 
 void s21::BrickGame::resetFileHighScore(std::string filename) {
   std::ofstream created_high_score_file(filename);
