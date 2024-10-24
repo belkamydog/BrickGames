@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+
 typedef struct {
     int** body;
     size_t row;

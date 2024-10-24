@@ -6,7 +6,10 @@ ALL_PROJECT_C_H_SRC=`find . -name "*.[cc, h]"`
 
 all:
 
-install:
+install: clean
+	mkdir -p build
+	cd gui/desktop/BrickGames && qmake && make && make clean
+	mv gui/desktop/BrickGames/BrickGames.app build
 
 uninstall:
 
@@ -15,10 +18,10 @@ dvi:
 dist:
 
 cli:
-	g++ -std=c++17  auxilary/matrix/matrix.cc brick_game/BrickGame.cc brick_game/snake/Snake.cc gui/cli/gui.cc main.cc  -o a.out -lncurses
+	g++ -std=c++17  auxilary/matrix/matrix.cc brick_game/BrickGame.cc brick_game/snake/Snake.cc brick_game/tetris/tetris.cc gui/cli/gui.cc gui/cli/cli_menu.cc controllers/BrickGameController.cc cli_app/cli_main_2.cc -o a.out -lncurses
 
 cli1:
-	g++ -std=c++17 brick_game/tetris/tetris.c  auxilary/matrix/matrix.cc  gui/cli/gui.cc tetris_main.cc  -o a.out -lncurses
+	g++ -std=c++17   brick_game/tetris/tetris.c  auxilary/matrix/matrix.cc  gui/cli/gui.cc tetris_main.cc  -o a.out -lncurses
 
 
 tests: clean
@@ -50,5 +53,3 @@ clean:
 	rm -rf tests/resources/snake_record.need_delete
 	rm -rf *.gcda *.gcno test	
 	rm -rf ./report test.info
-
-

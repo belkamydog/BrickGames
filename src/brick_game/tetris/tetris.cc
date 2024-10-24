@@ -6,20 +6,20 @@ GameInfo_t init_new_game(){
     game_.level = 1;
     tetris_.speed_boost = SPEED_BOOST;
     game_.speed = START_SPEED;
-    tetris_.next_figure = get_random_figure();
+    game_.next = get_random_figure();
     tetris_.current_figure = get_random_figure();
-    tetris_.game_field = create_matrix(ROW, COL);
     game_.field = create_matrix(ROW, COL);
-    
     tetris_.x_current_figure = 3;
     tetris_.y_current_figure = 0;
+    
     tetris_.game_status = 1;
     return game_;
 }
 
 void end_and_clear_game(){
     if (tetris_.current_figure != NULL) delete_matrix(tetris_.current_figure);
-    if (tetris_.next_figure != NULL)delete_matrix(tetris_.next_figure);
+    if (game_.next != NULL)delete_matrix(game_.next);
+    if (game_.field != NULL) delete_matrix(game_.field);
 }
 
 void game_play(){
@@ -87,8 +87,8 @@ void user_inputs(UserAction_t action){
 
 void start_new_figure(){
     delete_matrix(tetris_.current_figure);
-    tetris_.current_figure = tetris_.next_figure;
-    tetris_.next_figure = get_random_figure();
+    tetris_.current_figure = game_.next;
+    game_.next = get_random_figure();
     tetris_.x_current_figure = 3;
     tetris_.y_current_figure = 0;
 }
@@ -111,7 +111,7 @@ char check_move_left(){
     for (size_t i = 0; i < tetris_.current_figure->row; i++) {
         if (tetris_.current_figure->body[i][0] == 1){
             size_t y_abs = tetris_.y_current_figure + i;
-            if (x_abs >= 1 && tetris_.game_field->body[y_abs][x_abs-1] == 7) result = 0;
+            if (x_abs >= 1 && game_.field->body[y_abs][x_abs-1] == 7) result = 0;
         }
     }
     return result;
@@ -123,7 +123,7 @@ char check_move_right(){
     for (size_t i = 0; i < tetris_.current_figure->row; i++) {
         if (tetris_.current_figure->body[i][tetris_.current_figure->col-1] == 1){
             size_t y_abs = tetris_.y_current_figure + i;
-            if (x_abs < COL-2 && tetris_.game_field->body[y_abs][x_abs+1] == 7) result = 0;
+            if (x_abs < COL-2 && game_.field->body[y_abs][x_abs+1] == 7) result = 0;
         }
     }
     return result;
@@ -160,7 +160,7 @@ char contact_with_monolit(){
             if (tetris_.current_figure->body[i][j] == 1){
                 int y_abs = tetris_.y_current_figure + i;
                 int x_abs = tetris_.x_current_figure + j;
-                if (tetris_.game_field->body[y_abs+1][x_abs] == 7) {
+                if (game_.field->body[y_abs+1][x_abs] == 7) {
                     result = 1;
                     break;
                 }
@@ -172,7 +172,7 @@ char contact_with_monolit(){
 
 void pick_row(){
     int crashed_rows_count = 0;
-    for (size_t i = 0; i < tetris_.game_field->row; i++) {
+    for (size_t i = 0; i < game_.field->row; i++) {
         if (check_row(i) == 1){
             destroy_row(i);
             down_monolits();
@@ -210,9 +210,9 @@ void add_points(int count_crashed_rows){
 }
 
 void destroy_row(int row){
-    for (size_t i = 0; i < tetris_.game_field->col; i++)
+    for (size_t i = 0; i < game_.field->col; i++)
     {
-        tetris_.game_field->body[row][i] = 0;
+        game_.field->body[row][i] = 0;
     }
 }
 
@@ -221,12 +221,12 @@ void down_monolits(){
         size_t monolits_count = get_count_monolits_in_col(col);
         for (size_t row = ROW-1; row > 0; row--)
         {
-            if (tetris_.game_field->body[row][col] != 1){
+            if (game_.field->body[row][col] != 1){
                 if (monolits_count > 0){
-                    tetris_.game_field->body[row][col] = 7;
+                    game_.field->body[row][col] = 7;
                     monolits_count--;
                 }
-                else tetris_.game_field->body[row][col] = 0;
+                else game_.field->body[row][col] = 0;
             }
         }      
     }
@@ -236,7 +236,7 @@ size_t get_count_monolits_in_col(size_t col){
     size_t result = 0;
     for (size_t i = 0; i < ROW; i++)
     {
-        if (tetris_.game_field->body[i][col] == 7){
+        if (game_.field->body[i][col] == 7){
             result ++;
         }
     }
@@ -245,9 +245,9 @@ size_t get_count_monolits_in_col(size_t col){
 
 char check_row(size_t row){
     char result = 1;
-    for (size_t j = 0; j < tetris_.game_field->col; j++)
+    for (size_t j = 0; j < game_.field->col; j++)
     {
-        if (tetris_.game_field->body[row][j] != 7){
+        if (game_.field->body[row][j] != 7){
             result = 0;
             break;
         }
@@ -260,19 +260,19 @@ void monoliting_figure(){
         int y_abs = tetris_.y_current_figure + i;
         for (unsigned j = 0; j < tetris_.current_figure->col; j++){
             int x_abs = tetris_.x_current_figure + j;
-            if (tetris_.current_figure->body[i][j] != 0) tetris_.game_field->body[y_abs][x_abs] = 7;
+            if (tetris_.current_figure->body[i][j] != 0) game_.field->body[y_abs][x_abs] = 7;
             if (y_abs < 1) tetris_.game_status = 0;
         }
     }
 }
 
 void insert_figure_to_field(){
-    for (int i = 0; i < ROW; i++){
-        for (int j = 0; j < COL; j++){
+    for (size_t i = 0; i < ROW; i++){
+        for (size_t j = 0; j < COL; j++){
             if (is_in_the_area(i, j) == 1){
-                tetris_.game_field->body[i][j] = 1;
+                game_.field->body[i][j] = 1;
             }
-            else if (tetris_.game_field->body[i][j] != 7) tetris_.game_field->body[i][j] = 0;
+            else if (game_.field->body[i][j] != 7) game_.field->body[i][j] = 0;
         }
     }
 }
@@ -428,14 +428,6 @@ Matrix *z_get_from_memory_figure(){
 
 GameInfo_t updateCurrentState(){
     game_play();
-    for (size_t i = 0; i < ROW; i++)
-    {
-        for (size_t j = 0; j < COL; j++)
-        {
-            game_.field->body[i][j] = tetris_.game_field->body[i][j];
-        }
-        
-    }
     return game_;
 }
 

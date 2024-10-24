@@ -17,7 +17,7 @@ void print_end();
 void print_info(GameInfo_t game);
 void print_pause();
 void print_game_over(GameInfo_t game);
-void print_next(GameInfo_t game);
+void print_next(Matrix next);
 
 #endif // TETRIS_SRC_GUI_H
 

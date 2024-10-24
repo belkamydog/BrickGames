@@ -81,7 +81,7 @@ void print_info(GameInfo_t game){
         printw("A: LEFT' D: RIGHT S: SPEED DROP R: ROTATE\n");
         printw("Q: BACK TO MAIN MENU P: PAUSE\n");
         printw("<    NEXT FIGURE:   >\n\n");
-        // if (game.next != NULL) print_next(game.next);
+        if (game.next != NULL) print_next(*game.next);
     }
     else print_pause();
 }
@@ -112,10 +112,10 @@ void print_game_over(GameInfo_t game){
     nodelay(stdscr, TRUE);
 }
 
-void print_next(GameInfo_t game) {
-    for (unsigned i = 0; i < game.next->row; i++){
-        for (unsigned j = 0; j < game.next->col; j++){
-            if (game.next->body[i][j] == 1) printw("%3c", '*');
+void print_next(Matrix next) {
+    for (unsigned i = 0; i < next.row; i++){
+        for (unsigned j = 0; j < next.col; j++){
+            if (next.body[i][j] == 1) printw("%3c", '*');
             else printw("%3c", ' ');
         }
         printw("\n");

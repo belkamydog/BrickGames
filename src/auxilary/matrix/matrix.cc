@@ -5,9 +5,12 @@ Matrix * create_matrix(size_t row, size_t col){
     result->row = row;
     result->col = col;
     result->body = new int* [row];
-    for (size_t i = 0; i < row; i++) {
+    for (size_t i = 0; i < row; i++)
         result->body[i] = new int [col];
-    }
+    for (size_t i = 0; i < row; i++)
+        for (size_t j = 0; j < col; j++)
+            result->body[i][j] = 0;
+
     return result;
 }
 

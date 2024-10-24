@@ -7,12 +7,13 @@
 int main(){
     GameInfo_t g = init_new_game(); 
     initNcurces();
-    while (1) {
-        UserAction_t action;
-        render(g, &action);
-        userInput(action, '2');
-        g = updateCurrentState();
+    UserAction_t action = Start;
+    while (action != Terminate) {
+            render(g, &action);
+            userInput(action, '2');
+            g = updateCurrentState();
     }
+    end_and_clear_game();
     endNcurces();
     return 1;
 }

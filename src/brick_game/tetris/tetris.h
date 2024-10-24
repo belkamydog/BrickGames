@@ -10,7 +10,6 @@
 #include "../BrickData.h"
 
 #define TO_NEXT_LEVEL 600
-#define START_SPEED 800
 #define SPEED_BOOST 1
 #define PAUSE 100000000
 #define RECORD_FILE_PATH "resources/record.txt"
@@ -19,9 +18,7 @@ typedef struct{
     int temp;
     size_t temp_speed;
     float speed_boost;
-    Matrix *next_figure;
     Matrix *current_figure;
-    Matrix *game_field;
     unsigned x_current_figure;
     unsigned y_current_figure;
     char game_status;
@@ -66,7 +63,6 @@ char is_in_the_area(unsigned i, unsigned j);
 Matrix *get_random_figure();
 
 void save_record();
-
 void read_record();
 
 Matrix *i_get_from_memory_figure();
