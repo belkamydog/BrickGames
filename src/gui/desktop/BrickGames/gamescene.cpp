@@ -1,16 +1,25 @@
 #include "gamescene.h"
 
+GameScene::GameScene(size_t cell_size, Matrix &matrix)
+{
+    cell_size_ = cell_size;
+    matrix_ = matrix;
+}
+
 void GameScene::initializeScene()
 {
-    size_t cell = CELL_SIZE;
-    cells_.resize(ROW);
-    for (size_t i = 0; i < ROW; ++i) {
-        cells_[i].resize(COL);
-        for (size_t j = 0; j < COL; ++j) {
-            QGraphicsRectItem *r = new QGraphicsRectItem(j*cell, i*cell, cell, cell);
-            if (game_.field->body[i][j] > 0) r->setBrush(QBrush (Qt::black));
-            else if (game_.field->body[i][j] == -1) r->setBrush(QBrush (Qt::red));
-            else r->setPen(QPen(Qt::black));
+    cells_.resize(matrix_.row);
+    QColor field_color;
+    field_color.setRgb(158, 172, 136);
+    QColor body;
+    body.setRgb(40, 45, 20);
+    for (size_t i = 0; i < matrix_.row; ++i) {
+        cells_[i].resize(matrix_.col);
+        for (size_t j = 0; j < matrix_.col; ++j) {
+            QGraphicsRectItem *r = new QGraphicsRectItem(j*cell_size_, i*cell_size_, cell_size_, cell_size_);
+            if (matrix_.body[i][j] > 0) r->setBrush(QBrush (body));
+            else if (matrix_.body[i][j] == -1) r->setBrush(QBrush (body));
+            r->setPen(QPen(field_color));
             this->addItem(r);
             cells_[i][j] = r;
         }
@@ -19,13 +28,15 @@ void GameScene::initializeScene()
 
 void GameScene::updateScene()
 {
-    for (size_t i = 0; i < ROW; ++i) {
-        for (size_t j = 0; j < COL; ++j) {
-            if (game_.field->body[i][j] > 0){
-                cells_[i][j]->setBrush(QBrush(Qt::black));
+    QColor body;
+    body.setRgb(40, 45, 20);
+    for (size_t i = 0; i < matrix_.row; ++i) {
+        for (size_t j = 0; j < matrix_.col; ++j) {
+            if (matrix_.body[i][j] > 0){
+                cells_[i][j]->setBrush(QBrush(body));
             }
-            else if (game_.field->body[i][j] == -1){
-                cells_[i][j]->setBrush(QBrush(Qt::red));
+            else if (matrix_.body[i][j] == -1){
+                cells_[i][j]->setBrush(QBrush(body));
             }
             else {
                 QColor brush_color;
@@ -36,7 +47,8 @@ void GameScene::updateScene()
     }
 }
 
-void GameScene::setGame(const GameInfo_t &newGame)
+void GameScene::updateData(Matrix &matrix)
 {
-    game_ = newGame;
+    matrix_= matrix;
 }
+

@@ -28,6 +28,7 @@ typedef struct {
     int level;
     int speed;
     int pause;
+    int status;
 } GameInfo_t;
 
 #define START_SPEED 800

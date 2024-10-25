@@ -1,15 +1,15 @@
 #include "cli_menu.h"
 
 void print_menu() {
-    printf("Выберите игру: \n");
-    printf ("1. Tetris\n");
-    printf ("2. Snake\n");
-    printf("q For exit\n");
+    printw("Choose the game: \n");
+    printw ("1. Tetris\n");
+    printw ("2. Snake\n");
+    printw("q For exit\n");
 }
 
 GamesList_t choose_game() {
     GamesList_t result;
-    switch (getchar()) {
+    switch (getch()) {
     case '1':
         result = TetrisGame;
         break;

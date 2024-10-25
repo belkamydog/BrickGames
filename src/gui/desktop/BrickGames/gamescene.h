@@ -11,13 +11,14 @@
 class GameScene: public QGraphicsScene
 {
     public:
+        GameScene(size_t cell_size, Matrix &matrix);
         void initializeScene();
         void updateScene();
-        void setGame(const GameInfo_t &newGame);
+        void updateData(Matrix &matrix);
 
 private:
-        const size_t CELL_SIZE = 12;
-        GameInfo_t game_;
+        size_t cell_size_;
+        Matrix matrix_;
         QVector<QVector<QGraphicsRectItem*>> cells_;
 };
 

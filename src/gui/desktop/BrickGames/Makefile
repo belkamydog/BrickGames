@@ -55,6 +55,8 @@ OBJECTS_DIR   = ./
 SOURCES       = ../../../auxilary/matrix/matrix.cc \
 		../../../brick_game/BrickGame.cc \
 		../../../brick_game/snake/Snake.cc \
+		../../../brick_game/tetris/tetris.cc \
+		../../../controllers/BrickGameController.cc \
 		gamescene.cpp \
 		main.cpp \
 		mainwindow.cpp qrc_img.cpp \
@@ -62,6 +64,8 @@ SOURCES       = ../../../auxilary/matrix/matrix.cc \
 OBJECTS       = matrix.o \
 		BrickGame.o \
 		Snake.o \
+		tetris.o \
+		BrickGameController.o \
 		gamescene.o \
 		main.o \
 		mainwindow.o \
@@ -384,10 +388,14 @@ DIST          = /opt/homebrew/share/qt/mkspecs/features/spec_pre.prf \
 		../../../brick_game/BrickData.h \
 		../../../brick_game/BrickGame.h \
 		../../../brick_game/snake/Snake.h \
+		../../../brick_game/tetris/tetris.h \
+		../../../controllers/BrickGameController.h \
 		gamescene.h \
 		mainwindow.h ../../../auxilary/matrix/matrix.cc \
 		../../../brick_game/BrickGame.cc \
 		../../../brick_game/snake/Snake.cc \
+		../../../brick_game/tetris/tetris.cc \
+		../../../controllers/BrickGameController.cc \
 		gamescene.cpp \
 		main.cpp \
 		mainwindow.cpp
@@ -1078,8 +1086,8 @@ distdir: FORCE
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../../resources/img.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /opt/homebrew/share/qt/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../auxilary/matrix/matrix.h ../../../brick_game/BrickData.h ../../../brick_game/BrickGame.h ../../../brick_game/snake/Snake.h gamescene.h mainwindow.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../../auxilary/matrix/matrix.cc ../../../brick_game/BrickGame.cc ../../../brick_game/snake/Snake.cc gamescene.cpp main.cpp mainwindow.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../auxilary/matrix/matrix.h ../../../brick_game/BrickData.h ../../../brick_game/BrickGame.h ../../../brick_game/snake/Snake.h ../../../brick_game/tetris/tetris.h ../../../controllers/BrickGameController.h gamescene.h mainwindow.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../../auxilary/matrix/matrix.cc ../../../brick_game/BrickGame.cc ../../../brick_game/snake/Snake.cc ../../../brick_game/tetris/tetris.cc ../../../controllers/BrickGameController.cc gamescene.cpp main.cpp mainwindow.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents mainwindow.ui $(DISTDIR)/
 
 
@@ -1133,10 +1141,12 @@ moc_mainwindow.cpp: mainwindow.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/qtimer.h \
 		/opt/homebrew/lib/QtGui.framework/Headers/QKeyEvent \
 		/opt/homebrew/lib/QtGui.framework/Headers/qevent.h \
+		../../../controllers/BrickGameController.h \
 		../../../brick_game/snake/Snake.h \
 		../../../brick_game/BrickGame.h \
 		../../../brick_game/BrickData.h \
 		../../../auxilary/matrix/matrix.h \
+		../../../brick_game/tetris/tetris.h \
 		gamescene.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QGraphicsView \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qgraphicsview.h \
@@ -1186,6 +1196,19 @@ Snake.o: ../../../brick_game/snake/Snake.cc ../../../brick_game/snake/Snake.h \
 		../../../auxilary/matrix/matrix.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Snake.o ../../../brick_game/snake/Snake.cc
 
+tetris.o: ../../../brick_game/tetris/tetris.cc ../../../brick_game/tetris/tetris.h \
+		../../../auxilary/matrix/matrix.h \
+		../../../brick_game/BrickData.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o tetris.o ../../../brick_game/tetris/tetris.cc
+
+BrickGameController.o: ../../../controllers/BrickGameController.cc ../../../controllers/BrickGameController.h \
+		../../../brick_game/snake/Snake.h \
+		../../../brick_game/BrickGame.h \
+		../../../brick_game/BrickData.h \
+		../../../auxilary/matrix/matrix.h \
+		../../../brick_game/tetris/tetris.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o BrickGameController.o ../../../controllers/BrickGameController.cc
+
 gamescene.o: gamescene.cpp gamescene.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QGraphicsView \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qgraphicsview.h \
@@ -1208,10 +1231,12 @@ main.o: main.cpp mainwindow.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/qtimer.h \
 		/opt/homebrew/lib/QtGui.framework/Headers/QKeyEvent \
 		/opt/homebrew/lib/QtGui.framework/Headers/qevent.h \
+		../../../controllers/BrickGameController.h \
 		../../../brick_game/snake/Snake.h \
 		../../../brick_game/BrickGame.h \
 		../../../brick_game/BrickData.h \
 		../../../auxilary/matrix/matrix.h \
+		../../../brick_game/tetris/tetris.h \
 		gamescene.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QGraphicsView \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qgraphicsview.h \
@@ -1233,10 +1258,12 @@ mainwindow.o: mainwindow.cpp mainwindow.h \
 		/opt/homebrew/lib/QtCore.framework/Headers/qtimer.h \
 		/opt/homebrew/lib/QtGui.framework/Headers/QKeyEvent \
 		/opt/homebrew/lib/QtGui.framework/Headers/qevent.h \
+		../../../controllers/BrickGameController.h \
 		../../../brick_game/snake/Snake.h \
 		../../../brick_game/BrickGame.h \
 		../../../brick_game/BrickData.h \
 		../../../auxilary/matrix/matrix.h \
+		../../../brick_game/tetris/tetris.h \
 		gamescene.h \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/QGraphicsView \
 		/opt/homebrew/lib/QtWidgets.framework/Headers/qgraphicsview.h \

@@ -13,6 +13,7 @@ namespace s21{
             GameInfo_t sendDataToGui();
             void getUserActionFromGui(UserAction_t action);
             void setCurrentGame(GamesList_t game);
+            void resetGames();
             GameInfo_t getGameInfo();
         private: 
             GamesList_t current_game_ = TetrisGame;

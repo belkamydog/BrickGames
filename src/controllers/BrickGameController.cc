@@ -9,7 +9,9 @@ s21::BrickGameController::BrickGameController() {
     }
 }
 
-s21::BrickGameController::~BrickGameController() {}
+s21::BrickGameController::~BrickGameController() {
+    end_and_clear_game();
+}
 
 GameInfo_t s21::BrickGameController::sendDataToGui() {
   updateGameState();
@@ -27,6 +29,17 @@ void s21::BrickGameController::getUserActionFromGui(UserAction_t action) {
 
 void s21::BrickGameController::setCurrentGame(GamesList_t game) {
     current_game_ = game;
+}
+
+void s21::BrickGameController::resetGames() {
+    if (current_game_ == TetrisGame){
+        end_and_clear_game();
+        game_ = init_new_game();
+    }
+    else{
+        // snake_.~Snake();
+        snake_.initNewGame();
+    }
 }
 
 GameInfo_t s21::BrickGameController::getGameInfo() { return game_; }

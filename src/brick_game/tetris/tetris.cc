@@ -11,7 +11,7 @@ GameInfo_t init_new_game(){
     game_.field = create_matrix(ROW, COL);
     tetris_.x_current_figure = 3;
     tetris_.y_current_figure = 0;
-    
+    game_.status = 1;
     tetris_.game_status = 1;
     return game_;
 }
@@ -32,6 +32,7 @@ void game_play(){
         start_new_figure();
     }
     pick_row();  
+    game_.status = tetris_.game_status;
 }
 
 void check_level(){
@@ -54,10 +55,12 @@ void user_inputs(UserAction_t action){
     switch (action)
     {
     case Action:
-        tmp = rotate_matrix_90(tetris_.current_figure, Clockwise);
-        delete_matrix(tetris_.current_figure); 
-        tetris_.current_figure = tmp;
-        move_figuure_if_out_field();
+        if (game_.pause == 0) {
+            tmp = rotate_matrix_90(tetris_.current_figure, Clockwise);
+            delete_matrix(tetris_.current_figure); 
+            tetris_.current_figure = tmp;
+            move_figuure_if_out_field();
+        }
         break;
     case Right:
         move_right();
@@ -66,15 +69,8 @@ void user_inputs(UserAction_t action){
         move_left();
         break;
     case Pause:
-        if (game_.speed == PAUSE){
-            game_.speed = tetris_.temp_speed;
-            tetris_.game_status = 1;
-        }
-        else {
-            tetris_.temp_speed = game_.speed;
-            game_.speed = PAUSE;
-            tetris_.game_status = 'p';
-        }
+        if (game_.pause == 0) game_.pause = 1;
+        else if (game_.pause == 1) game_.pause = 0;
         break;
     case Down:
         speed_drop();
@@ -94,13 +90,13 @@ void start_new_figure(){
 }
 
 void move_right(){
-    if ((tetris_.current_figure->col + tetris_.x_current_figure) < COL){
+    if ((tetris_.current_figure->col + tetris_.x_current_figure) < COL && game_.pause == 0){
         if (check_move_right() == 1)tetris_.x_current_figure++;
     } 
 }
 
 void move_left(){
-    if (tetris_.x_current_figure > 0){
+    if (tetris_.x_current_figure > 0 && game_.pause == 0){
         if (check_move_left() == 1) tetris_.x_current_figure--;
     }
 }
@@ -134,10 +130,12 @@ void drop_figure(){
 }
 
 void speed_drop(){
-    while (stop_figure() == 0)
-    {
-        drop_figure();
-    }   
+    if (game_.pause == 0){
+        while (stop_figure() == 0)
+        {
+            drop_figure();
+        }   
+    }
 }
 
 char stop_figure(){
@@ -427,7 +425,7 @@ Matrix *z_get_from_memory_figure(){
 }
 
 GameInfo_t updateCurrentState(){
-    game_play();
+    if (game_.pause == 0) game_play();
     return game_;
 }
 

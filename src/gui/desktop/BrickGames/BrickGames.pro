@@ -13,7 +13,8 @@ SOURCES += \
     ../../../auxilary/matrix/matrix.cc \
     ../../../brick_game/BrickGame.cc \
     ../../../brick_game/snake/Snake.cc \
-#    ../../../brick_game/tetris/tetris.c \
+    ../../../brick_game/tetris/tetris.cc \
+    ../../../controllers/BrickGameController.cc \
     gamescene.cpp \
     main.cpp \
     mainwindow.cpp
@@ -23,7 +24,8 @@ HEADERS += \
     ../../../brick_game/BrickData.h \
     ../../../brick_game/BrickGame.h \
     ../../../brick_game/snake/Snake.h \
-#    ../../../brick_game/tetris/tetris.h \
+    ../../../brick_game/tetris/tetris.h \
+    ../../../controllers/BrickGameController.h \
     gamescene.h \
     mainwindow.h
 

@@ -8,6 +8,7 @@ s21::Snake::Snake() {
   game_info_.speed = START_SPEED;
   game_info_.level = 1;
   game_info_.field = create_matrix(ROW, COL);
+  game_info_.status = 1;
   snake_data_.direction = 'y';
   snake_data_.vector_direction = -1;
   snake_data_.snake_size = START_LENGTH;
@@ -93,6 +94,7 @@ GameInfo_t s21::Snake::updateCurrentState() {
       snakeMooving();
     snakeEatingGoal();
   }
+  game_info_.status = snake_data_.is_allive;
   return game_info_;
 }
 
