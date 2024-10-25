@@ -1,38 +1,35 @@
 #ifndef TETRIS_SRC_BACKEND_GAME_TETRIS_H
 #define TETRIS_SRC_BACKEND_GAME_TETRIS_H
 
-#include <stdlib.h>
-#include <time.h>
 #include <dirent.h>
+#include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "../../auxilary/matrix/matrix.h"
 #include "../BrickData.h"
 
 #define TO_NEXT_LEVEL 600
 #define SPEED_BOOST 1
-#define PAUSE 100000000
-#define RECORD_FILE_PATH "resources/record.txt"
+#define RECORD_FILE_PATH "tetris_record.txt"
 
-typedef struct{
-    int temp;
-    size_t temp_speed;
-    float speed_boost;
-    Matrix *current_figure;
-    unsigned x_current_figure;
-    unsigned y_current_figure;
-    char game_status;
+typedef struct {
+  int temp;
+  size_t temp_speed;
+  float speed_boost;
+  Matrix *current_figure;
+  unsigned x_current_figure;
+  unsigned y_current_figure;
+  char game_status;
 } Game;
 
-typedef enum{
-    I, J, L, O, S, T, Z
-}Figures;
+typedef enum { I, J, L, O, S, T, Z } Figures;
 
 static GameInfo_t game_;
 static Game tetris_;
 
 GameInfo_t updateCurrentState();
-void userInput(UserAction_t action, char hold);
+void userInput(UserAction_t action);
 
 GameInfo_t init_new_game();
 void game_play();

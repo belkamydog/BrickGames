@@ -20,10 +20,10 @@ GameInfo_t s21::BrickGameController::sendDataToGui() {
 
 void s21::BrickGameController::getUserActionFromGui(UserAction_t action) {
     if (current_game_ == SnakeGame){
-        snake_.userInput(action, false);
+        snake_.userInput(action);
     }
     else {
-        userInput(action, ' '); // tetris
+        userInput(action);
     }
 }
 
@@ -37,7 +37,6 @@ void s21::BrickGameController::resetGames() {
         game_ = init_new_game();
     }
     else{
-        // snake_.~Snake();
         snake_.initNewGame();
     }
 }

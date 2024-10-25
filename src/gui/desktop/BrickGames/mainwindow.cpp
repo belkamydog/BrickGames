@@ -13,7 +13,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui_->graphicsView->setScene(main_field_scene_);
     ui_->graphicsView->show();
     connect(&timer_, SIGNAL(timeout()), this, SLOT(mainRender()));
-    showNext();
 }
 
 MainWindow::~MainWindow()
@@ -46,11 +45,18 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     case Qt::Key_P:
         result = Pause;
         break;
+    case Qt::Key_S:
+        on_startBtn_clicked();
+        break;
+    case Qt::Key_R:
+        on_resetBtn_clicked();
+        break;
     default:
         result = Start;
         break;
     }
-    controller_.getUserActionFromGui(result);
+    if (!need_update_) controller_.getUserActionFromGui(result);
+    need_update_ = true;
 }
 
 void MainWindow::mainRender()
@@ -64,26 +70,37 @@ void MainWindow::mainRender()
     ui_->levelData->setText(QString::number(game_.level));
     ui_->scoreData->setText(QString::number(game_.score));
     ui_->recordData->setText(QString::number(game_.high_score));
-    if (game_.status == 0) ui_->gameOverLabel->setText("GAME OVER");
-    else ui_->gameOverLabel->clear();
+    if (game_.status == 0){
+        ui_->gameOverLabel_1->setText(" GAME");
+        ui_->gameOverLabel_2->setText(" OVER");
+        timer_.stop();
+    }
+    else{
+        ui_->gameOverLabel_1->clear();
+        ui_->gameOverLabel_2->clear();
+    }
+    need_update_ = false;
 }
 
 void MainWindow::on_startBtn_clicked()
 {
     startGame();
     if (current_game_ == TetrisGame){
+        ui_->nextView->setEnabled(true);
         current_game_ = SnakeGame;
         controller_.setCurrentGame(SnakeGame);
     }
     else if (current_game_ == SnakeGame){
         current_game_ = TetrisGame;
         controller_.setCurrentGame(TetrisGame);
+        ui_->nextView->setEnabled(false);
     }
 }
 
 void MainWindow::on_resetBtn_clicked()
 {
     controller_.resetGames();
+    startGame();
 }
 
 void MainWindow::startGame()
@@ -91,12 +108,12 @@ void MainWindow::startGame()
     game_ = controller_.getGameInfo();
     main_field_scene_->updateData(*game_.field);
     main_field_scene_->initializeScene();
-    timer_.start();
+    if(!timer_.isActive()) timer_.start();
 }
 
 void MainWindow::showNext()
 {
-    if (game_.next != nullptr){
+    if (game_.next != nullptr && current_game_ == TetrisGame){
         next_figure_ = new GameScene (8, *game_.next);
         next_figure_->updateData(*game_.next);
         next_figure_->initializeScene();

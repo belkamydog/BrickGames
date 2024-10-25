@@ -1,28 +1,29 @@
 #ifndef SNAKE_BRICK_GAME_SRC_BRICK_GAME_BRICK_GAME_H
 #define SNAKE_BRICK_GAME_SRC_BRICK_GAME_BRICK_GAME_H
 
-#include <iostream>
 #include <fstream>
-#include <string>
+#include <iostream>
 #include <regex>
+#include <string>
 
-#include "BrickData.h"
 #include "../auxilary/matrix/matrix.h"
+#include "BrickData.h"
 
 namespace s21 {
-    class BrickGame {
-        public:
-            static void userInput(UserAction_t action, bool hold);
-            virtual GameInfo_t updateCurrentState();
-            virtual void updateCurrentState(GameInfo_t *game);
-        protected:
-            GameInfo_t game_info_;
-            void loadGameRecord(std::string filename);
-            void updateGameRecord(std::string filename);
-            void goToTheNextLevel();
-        private:
-            void resetFileHighScore(std::string filename);
-    };
+class BrickGame {
+public:
+  virtual void userInput(UserAction_t action) = 0;
+  virtual GameInfo_t updateCurrentState() = 0;
+
+protected:
+  GameInfo_t game_info_;
+  void loadGameRecord(std::string filename);
+  void updateGameRecord(std::string filename);
+  void goToTheNextLevel();
+
+private:
+  void resetFileHighScore(std::string filename);
 };
+}; // namespace s21
 
 #endif // SNAKE_BRICK_GAME_SRC_BRICK_GAME_BRICK_GAME_H

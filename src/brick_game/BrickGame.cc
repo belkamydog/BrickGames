@@ -1,15 +1,5 @@
 #include "BrickGame.h"
 
-void s21::BrickGame::userInput(UserAction_t action, bool hold) {
-  std::cerr << hold << action;
-}
-
-GameInfo_t s21::BrickGame::updateCurrentState() {
-  return GameInfo_t();
-}
-
-void s21::BrickGame::updateCurrentState(GameInfo_t *game) {}
-
 void s21::BrickGame::loadGameRecord(std::string filename) {
   std::ifstream in(filename);
   if (!in.is_open())
@@ -46,12 +36,12 @@ void s21::BrickGame::updateGameRecord(std::string filename) {
 }
 
 void s21::BrickGame::goToTheNextLevel() {
-  if (game_info_.score % STEP_LEVEL == 0 && game_info_.level < (int) MAX_LEVEL){
+  if (game_info_.score % STEP_LEVEL == 0 && game_info_.level < (int)MAX_LEVEL) {
     game_info_.level++;
-    game_info_.speed += STEP_SPEED;
+    if (game_info_.speed > 100)
+      game_info_.speed -= STEP_SPEED;
   }
 }
-
 
 void s21::BrickGame::resetFileHighScore(std::string filename) {
   std::ofstream created_high_score_file(filename);

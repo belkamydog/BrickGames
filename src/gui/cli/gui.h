@@ -1,12 +1,12 @@
 #ifndef TETRIS_SRC_GUI_H
 #define TETRIS_SRC_GUI_H
 
-#include <stdio.h>
 #include <ncurses.h>
+#include <stdio.h>
 #include <unistd.h>
 
-#include "../../brick_game/BrickData.h"
 #include "../../auxilary/matrix/matrix.h"
+#include "../../brick_game/BrickData.h"
 
 void render(GameInfo_t game, UserAction_t *action);
 void initNcurces();
@@ -20,4 +20,3 @@ void print_game_over(GameInfo_t game);
 void print_next(Matrix next);
 
 #endif // TETRIS_SRC_GUI_H
-

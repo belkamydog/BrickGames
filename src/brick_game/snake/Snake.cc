@@ -44,10 +44,10 @@ GameInfo_t s21::Snake::getGameInfo() { return game_info_; }
 
 bool s21::Snake::isAlive() { return snake_data_.is_allive; }
 
-void s21::Snake::userInput(UserAction_t action, bool hold) {
+void s21::Snake::userInput(UserAction_t action) {
   if (action == Pause && game_info_.pause == 0)
     game_info_.pause = 1;
-  else if (action == Pause && game_info_.pause == 1){
+  else if (action == Pause && game_info_.pause == 1) {
     game_info_.pause = 0;
   }
   if (game_info_.pause == 0) {
@@ -78,19 +78,17 @@ void s21::Snake::userInput(UserAction_t action, bool hold) {
       }
     }
   }
-
-  std::cerr << hold;
 }
 
 GameInfo_t s21::Snake::updateCurrentState() {
-  if (game_info_.pause == 0) {
+  if (game_info_.pause == 0 && game_info_.status > 0) {
     if (snake_data_.direction == 'x') {
       snake_data_.x_head += snake_data_.vector_direction;
     } else if (snake_data_.direction == 'y') {
       snake_data_.y_head += snake_data_.vector_direction;
     }
     borderControl();
-    if (snake_data_.is_allive)
+    if (snake_data_.is_allive && game_info_.field->body)
       snakeMooving();
     snakeEatingGoal();
   }
@@ -124,8 +122,9 @@ void s21::Snake::snakeMooving() {
       }
     }
   }
-  if (game_info_.field->body[snake_data_.y_head][snake_data_.x_head] > 0)
+  if (game_info_.field->body[snake_data_.y_head][snake_data_.x_head] > 0) {
     snake_data_.is_allive = false;
+  }
   game_info_.field->body[snake_data_.y_head][snake_data_.x_head] = 1;
   delete_matrix(previous_field);
 }

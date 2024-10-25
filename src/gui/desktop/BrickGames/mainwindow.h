@@ -5,6 +5,7 @@
 #include <QGraphicsRectItem>
 #include <QTimer>
 #include <QKeyEvent>
+#include <QtMultimedia/QMediaPlayer>
 
 #include "../../../controllers/BrickGameController.h"
 #include "gamescene.h"
@@ -41,6 +42,7 @@ private:
     GameScene *main_field_scene_;
     GameScene *next_figure_;
     GameInfo_t game_;
+    bool need_update_ = false;
 
     void startGame();
     void showNext();

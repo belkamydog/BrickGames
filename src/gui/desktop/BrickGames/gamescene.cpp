@@ -52,3 +52,16 @@ void GameScene::updateData(Matrix &matrix)
     matrix_= matrix;
 }
 
+void GameScene::clearScene()
+{
+    QColor body;
+    body.setRgb(40, 45, 20);
+    for (size_t i = 0; i < matrix_.row; ++i) {
+        for (size_t j = 0; j < matrix_.col; ++j) {
+                QColor brush_color;
+                brush_color.setRgb(158, 172, 136);
+                cells_[i][j]->setBrush(QBrush(brush_color));
+        }
+    }
+}
+

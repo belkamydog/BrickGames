@@ -15,6 +15,7 @@ class GameScene: public QGraphicsScene
         void initializeScene();
         void updateScene();
         void updateData(Matrix &matrix);
+        void clearScene();
 
 private:
         size_t cell_size_;

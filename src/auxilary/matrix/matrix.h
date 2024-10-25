@@ -3,19 +3,15 @@
 
 #include <iostream>
 
-
 typedef struct {
-    int** body;
-    size_t row;
-    size_t col;
+  int **body;
+  size_t row;
+  size_t col;
 } Matrix;
 
-typedef enum {
-   Clockwise,
-   Counterclockwise
-} RotSide;
+typedef enum { Clockwise, Counterclockwise } RotSide;
 
-Matrix * create_matrix(size_t row, size_t col);
+Matrix *create_matrix(size_t row, size_t col);
 
 void delete_matrix(Matrix *matrix);
 

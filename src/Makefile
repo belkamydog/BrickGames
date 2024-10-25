@@ -2,27 +2,34 @@ CC=g++ -std=c++17
 WWW=-Wall -Werror -Wextra
 GTEST=-lgtest -lgmock -pthread
 SRC_TESTS=brick_game/BrickGame.cc brick_game/snake/Snake.cc tests/test.cc
+CLI_SRC=auxilary/matrix/matrix.cc brick_game/BrickGame.cc brick_game/snake/Snake.cc\
+		brick_game/tetris/tetris.cc gui/cli/gui.cc gui/cli/cli_menu.cc\
+		controllers/BrickGameController.cc cli_app/main_cli_app.cc\
+
 ALL_PROJECT_C_H_SRC=`find . -name "*.[cc, h]"`
 
 all:
 
-install: clean
-	mkdir -p build
-	cd gui/desktop/BrickGames && qmake && make && make clean
-	mv gui/desktop/BrickGames/BrickGames.app build
+install: clean cli desktop
 
-uninstall:
+open_desktop:
+	./bin/BrickGames
+open_cli:
+	./bin/cli.out
+
+uninstall: clean
 
 dvi:
 
 dist:
 
 cli:
-	g++ -std=c++17  auxilary/matrix/matrix.cc brick_game/BrickGame.cc brick_game/snake/Snake.cc brick_game/tetris/tetris.cc gui/cli/gui.cc gui/cli/cli_menu.cc controllers/BrickGameController.cc cli_app/cli_main_2.cc -o a.out -lncurses
+	$(CC) $(WWW) $(CLI_SRC) -o bin/cli.out -lncurses
 
-cli1:
-	g++ -std=c++17   brick_game/tetris/tetris.c  auxilary/matrix/matrix.cc  gui/cli/gui.cc tetris_main.cc  -o a.out -lncurses
-
+desktop:
+	mkdir -p bin
+	cd gui/desktop/BrickGames && qmake && make && make clean
+	mv gui/desktop/BrickGames/BrickGames.app/Contents/MacOS/BrickGames bin
 
 tests: clean
 	mkdir -p build
@@ -48,8 +55,12 @@ correct_style:
 	rm -rf .clang-format
 
 clean:
-	rm -rf build/*
+	rm -rf bin/*
 	rm -rf *.out
 	rm -rf tests/resources/snake_record.need_delete
 	rm -rf *.gcda *.gcno test	
 	rm -rf ./report test.info
+	rm -rf gui/desktop/BrickGames/BrickGames.app gui/desktop/BrickGames/.qmake.stash
+	rm -rf gui/desktop/BrickGames/BrickGames.pro.user
+	rm -rf gui/desktop/BrickGames/*.o
+
