@@ -27,7 +27,7 @@ private:
   };
 
   SnakeData snake_data_;
-  const std::string FILE_HIGHSCORE = "snake_record";
+  const std::string FILE_HIGHSCORE = "snake.highscore";
   const size_t START_LENGTH = 4;
   const size_t MAX_LENGTH = 200;
   void initaliseSnakeInTheField();

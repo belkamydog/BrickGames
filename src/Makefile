@@ -8,12 +8,13 @@ CLI_SRC=auxilary/matrix/matrix.cc brick_game/BrickGame.cc brick_game/snake/Snake
 
 ALL_PROJECT_C_H_SRC=`find . -name "*.[cc, h]"`
 
-all: clean cli desktop tests gcov_report dvi
+all: clean cli desktop test gcov_report dvi
 
 install: clean cli desktop
 
 open_desktop:
 	./bin/BrickGames
+
 open_cli:
 	./bin/cli.out
 
@@ -36,10 +37,10 @@ desktop:
 	cd gui/desktop/BrickGames && qmake && make && make clean
 	mv gui/desktop/BrickGames/BrickGames.app/Contents/MacOS/BrickGames bin
 
-tests: clean
-	mkdir -p build
-	$(CC) $(WWW)  -pthread $(SRC_TESTS) -o ./build/test.out -lm -lgtest -lgmock
-	./build/test.out
+test: clean
+	mkdir -p bin
+	$(CC) $(WWW)  -pthread $(SRC_TESTS) -o ./bin/test.out -lm -lgtest -lgmock
+	./bin/test.out
 	rm -rf tests/resources/*.need_delete
 
 gcov_report: clean
@@ -59,6 +60,9 @@ correct_style:
 	clang-format -i $(ALL_PROJECT_C_H_SRC)
 	rm -rf .clang-format
 
+valgrind: cli
+	valgrind ./bin/test.out
+
 clean:
 	rm -rf bin/*
 	rm -rf *.out
@@ -68,3 +72,4 @@ clean:
 	rm -rf gui/desktop/BrickGames/BrickGames.app gui/desktop/BrickGames/.qmake.stash
 	rm -rf gui/desktop/BrickGames/BrickGames.pro.user
 	rm -rf gui/desktop/BrickGames/*.o
+	rm -rf *.highscore

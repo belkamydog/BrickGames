@@ -19,6 +19,7 @@ namespace s21{
             GamesList_t current_game_ = TetrisGame;
             Snake snake_;
             GameInfo_t game_;
+            TetrisGameInfo_t tetris_game_;
             void updateGameState();
     };
 };

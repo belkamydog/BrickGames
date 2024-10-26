@@ -12,7 +12,7 @@ int main() {
   controller.setCurrentGame(current_game);
   GameInfo_t g = controller.getGameInfo();
   UserAction_t action = Start;
-  while (action != Terminate) {
+  while (action != Terminate && g.status != 0) {
     render(g, &action);
     controller.getUserActionFromGui(action);
     g = controller.sendDataToGui();
