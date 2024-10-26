@@ -298,13 +298,11 @@ char is_in_the_area(unsigned i, unsigned j) {
   return result;
 }
 
-// Record operations
 void save_record() {
   game_.high_score = game_.score;
   FILE *file = fopen(RECORD_FILE_PATH, "w");
   if (file) {
     char buffer[100];
-    // sprintf(buffer, "%d", game_.high_score);
     game_.high_score = atoi(buffer);
     fputs(buffer, file);
   }
@@ -321,7 +319,6 @@ void read_record() {
   fclose(file);
 }
 
-// Figures
 Matrix *get_random_figure() {
   Matrix *result = NULL;
   int choice = rand() / (RAND_MAX / (6 + 1) + 1);

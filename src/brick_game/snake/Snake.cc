@@ -130,9 +130,9 @@ void s21::Snake::snakeMooving() {
 }
 
 void s21::Snake::borderControl() {
-  if (snake_data_.x_head < 0 || snake_data_.x_head > COL - 1)
+  if (snake_data_.x_head > COL - 1)
     snake_data_.is_allive = false;
-  else if (snake_data_.y_head < 0 || snake_data_.y_head > ROW - 1)
+  else if (snake_data_.y_head > ROW - 1)
     snake_data_.is_allive = false;
 }
 

@@ -6,6 +6,7 @@
 
 #include "../brick_game/BrickGame.h"
 #include "../brick_game/snake/Snake.h"
+#include "../auxilary/matrix/matrix.h"
 
 #define private public
 #define protected public

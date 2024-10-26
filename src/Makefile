@@ -1,14 +1,14 @@
 CC=g++ -std=c++17
 WWW=-Wall -Werror -Wextra
 GTEST=-lgtest -lgmock -pthread
-SRC_TESTS=brick_game/BrickGame.cc brick_game/snake/Snake.cc tests/test.cc
+SRC_TESTS=brick_game/BrickGame.cc brick_game/snake/Snake.cc tests/test.cc auxilary/matrix/matrix.cc
 CLI_SRC=auxilary/matrix/matrix.cc brick_game/BrickGame.cc brick_game/snake/Snake.cc\
 		brick_game/tetris/tetris.cc gui/cli/gui.cc gui/cli/cli_menu.cc\
 		controllers/BrickGameController.cc cli_app/main_cli_app.cc\
 
 ALL_PROJECT_C_H_SRC=`find . -name "*.[cc, h]"`
 
-all:
+all: clean cli desktop tests gcov_report dvi
 
 install: clean cli desktop
 
@@ -20,8 +20,13 @@ open_cli:
 uninstall: clean
 
 dvi:
+	open readme/readme.md
 
-dist:
+dist: clean cli desktop
+	mkdir -p bin
+	tar -cf ./bin/cli_brick_game.tar ./bin/cli.out
+	tar -cf ./bin/desktop_brick_game.tar ./bin/BrickGames
+
 
 cli:
 	$(CC) $(WWW) $(CLI_SRC) -o bin/cli.out -lncurses
@@ -40,7 +45,7 @@ tests: clean
 gcov_report: clean
 	$(CC) $(WWW) $(GTEST) $(SRC_TESTS) -fprofile-arcs -ftest-coverage -o ./build/test.out
 	./build/test.out
-	lcov -c -d . -o test.info --ignore-errors inconsistent --no-external
+	lcov -c  -d . -o test.info --ignore-errors inconsistent --no-external
 	genhtml -o report test.info --ignore-errors inconsistent 
 	open ./report/index.html
 
@@ -63,4 +68,3 @@ clean:
 	rm -rf gui/desktop/BrickGames/BrickGames.app gui/desktop/BrickGames/.qmake.stash
 	rm -rf gui/desktop/BrickGames/BrickGames.pro.user
 	rm -rf gui/desktop/BrickGames/*.o
-

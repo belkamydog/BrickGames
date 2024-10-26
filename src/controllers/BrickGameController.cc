@@ -7,6 +7,7 @@ s21::BrickGameController::BrickGameController() {
     else{
         snake_.initNewGame();
     }
+    std::cerr << game_.pause << tetris_.game_status;
 }
 
 s21::BrickGameController::~BrickGameController() {
@@ -33,7 +34,6 @@ void s21::BrickGameController::setCurrentGame(GamesList_t game) {
 
 void s21::BrickGameController::resetGames() {
     if (current_game_ == TetrisGame){
-        end_and_clear_game();
         game_ = init_new_game();
     }
     else{
@@ -47,6 +47,6 @@ void s21::BrickGameController::updateGameState() {
     if (current_game_ == SnakeGame) {
     game_ = snake_.updateCurrentState();
   } else {
-    game_ = updateCurrentState();  // tetris
+    game_ = updateCurrentState();
   }
 }
