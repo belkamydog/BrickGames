@@ -21,7 +21,7 @@ open_cli:
 uninstall: clean
 
 dvi:
-	open readme/readme.md
+	open ../readme/readme.md
 
 dist: clean cli desktop
 	mkdir -p bin
