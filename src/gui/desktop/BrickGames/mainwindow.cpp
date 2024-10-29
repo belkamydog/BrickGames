@@ -9,10 +9,15 @@ MainWindow::MainWindow(QWidget *parent)
     this->setFocusPolicy(Qt::StrongFocus);
     game_ = controller_.getGameInfo();
     main_field_scene_ = new GameScene (12, *game_.field);
-    timer_.setInterval(game_.speed);
+    game_speed_timer_.setInterval(game_.speed);
     ui_->graphicsView->setScene(main_field_scene_);
     ui_->graphicsView->show();
-    connect(&timer_, SIGNAL(timeout()), this, SLOT(mainRender()));
+    one_second_timer_.setInterval(1000);
+    game_time_ = new QTime(0, 0, 0, 0);
+    connect(&game_speed_timer_, SIGNAL(timeout()), this, SLOT(mainRender()));
+    connect(&one_second_timer_, SIGNAL(timeout()), this, SLOT(updateGameTime()));
+    ui_->gameOverLabel_1->setVisible(false);
+    ui_->gameOverLabel_2->setVisible(false);
 }
 
 MainWindow::~MainWindow()
@@ -43,7 +48,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         result = Action;
         break;
     case Qt::Key_P:
-        result = Pause;
+        on_pauseBtn_clicked();
         break;
     case Qt::Key_S:
         on_startBtn_clicked();
@@ -63,7 +68,7 @@ void MainWindow::mainRender()
 {
     game_ = controller_.getGameInfo();
     game_ = controller_.sendDataToGui();
-    timer_.setInterval(game_.speed);
+    game_speed_timer_.setInterval(game_.speed);
     main_field_scene_->updateData(*game_.field);
     main_field_scene_->updateScene();
     showNext();
@@ -71,13 +76,14 @@ void MainWindow::mainRender()
     ui_->scoreData->setText(QString::number(game_.score));
     ui_->recordData->setText(QString::number(game_.high_score));
     if (game_.status == 0){
-        ui_->gameOverLabel_1->setText(" GAME");
-        ui_->gameOverLabel_2->setText(" OVER");
-        timer_.stop();
+        ui_->game_time->setVisible(false);
+        ui_->gameOverLabel_1->setVisible(true);
+        ui_->gameOverLabel_2->setVisible(true);
+        game_speed_timer_.stop();
     }
     else{
-        ui_->gameOverLabel_1->clear();
-        ui_->gameOverLabel_2->clear();
+        ui_->gameOverLabel_1->setVisible(false);
+        ui_->gameOverLabel_2->setVisible(false);
     }
     need_update_ = false;
 }
@@ -95,12 +101,20 @@ void MainWindow::on_startBtn_clicked()
         controller_.setCurrentGame(TetrisGame);
         ui_->nextView->setEnabled(false);
     }
+    game_time_ = new QTime(0, 0, 0, 0);
+    one_second_timer_.start();
+    one_second_timer_.start();
+    ui_->game_time->setVisible(true);
 }
 
 void MainWindow::on_resetBtn_clicked()
 {
     controller_.resetGames();
     startGame();
+    game_time_->setHMS(0, 0, 0, 0);
+    one_second_timer_.start();
+    ui_->game_time->setVisible(true);
+
 }
 
 void MainWindow::startGame()
@@ -108,7 +122,7 @@ void MainWindow::startGame()
     game_ = controller_.getGameInfo();
     main_field_scene_->updateData(*game_.field);
     main_field_scene_->initializeScene();
-    if(!timer_.isActive()) timer_.start();
+    if(!game_speed_timer_.isActive()) game_speed_timer_.start();
 }
 
 void MainWindow::showNext()
@@ -121,6 +135,12 @@ void MainWindow::showNext()
         ui_->nextView->setScene(next_figure_);
         ui_->nextView->show();
     }
+}
+
+void MainWindow::updateGameTime()
+{
+   *game_time_ =  game_time_->addSecs(1);
+   ui_->game_time->setText(game_time_->toString());
 }
 
 void MainWindow::on_leftBtn_clicked()
@@ -136,6 +156,8 @@ void MainWindow::on_rightBtn_clicked()
 void MainWindow::on_pauseBtn_clicked()
 {
     controller_.getUserActionFromGui(Pause);
+    if (game_.pause == 0) one_second_timer_.stop();
+    else one_second_timer_.start();
 }
 
 void MainWindow::on_dropBtn_clicked()

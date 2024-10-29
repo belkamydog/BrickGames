@@ -9,6 +9,9 @@
 #include "../auxilary/matrix/matrix.h"
 #include "BrickData.h"
 
+/**
+ * Абстрактный класс игры содержит общие методы для всех игр
+ */
 namespace s21 {
 class BrickGame {
 public:

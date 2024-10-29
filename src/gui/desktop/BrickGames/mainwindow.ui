@@ -560,7 +560,7 @@ color: rgb(40, 45, 20);
 </string>
     </property>
     <property name="text">
-     <string/>
+     <string>GAME</string>
     </property>
    </widget>
    <widget class="QLabel" name="gameOverLabel_2">
@@ -576,12 +576,77 @@ color: rgb(40, 45, 20);
      <string notr="true">image: none;
 background-color: rgb(158, 172, 136);
 font: 700 18pt &quot;Marker Felt&quot;;
-color: rgb(40, 45, 20);</string>
+color: rgb(40, 45, 20);
+</string>
+    </property>
+    <property name="text">
+     <string>OVER</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="game_time">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>150</y>
+      <width>55</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: none;
+background-color: rgb(158, 172, 136);
+font: 700 12pt &quot;Marker Felt&quot;;
+color: rgb(40, 45, 20);
+</string>
     </property>
     <property name="text">
      <string/>
     </property>
    </widget>
+   <widget class="QLabel" name="game_time_2">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>149</y>
+      <width>51</width>
+      <height>56</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">image: none;
+background-color: rgb(158, 172, 136);
+font: 700 12pt &quot;Marker Felt&quot;;
+color: rgb(40, 45, 20);
+</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <zorder>graphicsView</zorder>
+   <zorder>startBtn</zorder>
+   <zorder>resetBtn</zorder>
+   <zorder>resetLabel</zorder>
+   <zorder>startLabel</zorder>
+   <zorder>scoreLabel</zorder>
+   <zorder>scoreData</zorder>
+   <zorder>levelLabel</zorder>
+   <zorder>levelData</zorder>
+   <zorder>recordLabel</zorder>
+   <zorder>recordData</zorder>
+   <zorder>actionBtn</zorder>
+   <zorder>upBtn</zorder>
+   <zorder>rightBtn</zorder>
+   <zorder>dropBtn</zorder>
+   <zorder>leftBtn</zorder>
+   <zorder>nextView</zorder>
+   <zorder>holdView</zorder>
+   <zorder>pauseBtn</zorder>
+   <zorder>pauseLabel</zorder>
+   <zorder>game_time_2</zorder>
+   <zorder>gameOverLabel_2</zorder>
+   <zorder>gameOverLabel_1</zorder>
+   <zorder>game_time</zorder>
   </widget>
  </widget>
  <resources/>

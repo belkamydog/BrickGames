@@ -3,6 +3,10 @@
 
 #include "../auxilary/matrix/matrix.h"
 
+/** 
+ * Содержит описание общих для всех игр структур данных и констант
+*/
+
 typedef enum { TetrisGame, SnakeGame, Exit } GamesList_t;
 
 typedef enum {
@@ -27,7 +31,7 @@ typedef struct {
   int status;
 } GameInfo_t;
 
-#define START_SPEED 800
+const size_t START_SPEED = 800;
 const size_t ROW = 20;
 const size_t COL = 10;
 const size_t STEP_LEVEL = 5;

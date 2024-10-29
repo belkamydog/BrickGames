@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QGraphicsRectItem>
 #include <QTimer>
+#include <QTime>
 #include <QKeyEvent>
 #include <QtMultimedia/QMediaPlayer>
 
@@ -28,6 +29,7 @@ protected:
 private slots:
     void on_resetBtn_clicked();
     void mainRender();
+    void updateGameTime();
     void on_startBtn_clicked();
     void on_leftBtn_clicked();
     void on_rightBtn_clicked();
@@ -38,7 +40,9 @@ private slots:
 
 private:
     Ui::MainWindow *ui_;
-    QTimer timer_;
+    QTimer game_speed_timer_;
+    QTimer one_second_timer_;
+    QTime *game_time_;
     GameScene *main_field_scene_;
     GameScene *next_figure_;
     GameInfo_t game_;

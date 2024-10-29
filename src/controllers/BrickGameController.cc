@@ -5,14 +5,12 @@ s21::BrickGameController::BrickGameController() {
         init_new_game(&tetris_game_);
         game_ = tetris_game_.game;
     }
-    // else{
-    //     snake_.initNewGame();
-    // }
+    else{
+        snake_.initNewGame();
+    }
 }
 
-s21::BrickGameController::~BrickGameController() {
-    // end_and_clear_game(&tetris_game_);
-}
+s21::BrickGameController::~BrickGameController() {}
 
 GameInfo_t s21::BrickGameController::sendDataToGui() {
   updateGameState();
